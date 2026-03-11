@@ -21,7 +21,7 @@ phase1() {
     # First nmap scan (phase 1 all ports)
     echo ""
     echo "[*] Phase 1: Scan all ports..."
-    nmap -p- -T4 --min-rate 1000 -oN "$OUTDIR/phase1_allports.txt" "$IP"
+    nmap -q -p- -T4 --min-rate 1000 -oN "$OUTDIR/phase1_allports.txt" "$IP"
     echo "[*] Phase 1: finished!"
 
     # Extract open ports from phase1 output
@@ -38,7 +38,7 @@ phase2() {
     # Second nmap scan (phase 2 service scan on open ports)
     echo ""
     echo "[*] Phase 2: Sevice Scan on Ports $OPEN_PORTS..."
-    nmap -p "$OPEN_PORTS" -sC -sV -T4 -oN "$OUTDIR/phase2_services.txt" "$IP"
+    nmap -q -p "$OPEN_PORTS" -sC -sV -T4 -oN "$OUTDIR/phase2_services.txt" "$IP"
     echo "[*] Phase 2: finished!"
     echo "[+] Services found:"
     grep "^[0-9]" "$OUTDIR/phase2_services.txt"
@@ -49,7 +49,7 @@ phase3() {
     # UDP Scan (phase 3 udp)
     echo ""
     echo "[*] Phase 3: UDP Scan (Top 100 Ports)..."
-    sudo nmap -sU --top-ports 100 -T4 -oN "$OUTDIR/phase3_udp.txt" "$IP"
+    sudo nmap -q -sU --top-ports 100 -T4 -oN "$OUTDIR/phase3_udp.txt" "$IP"
     echo "[*] Phase 3: finished!"
     UDP_PORTS=$(grep "^[0-9]" "$OUTDIR/phase3_udp.txt" | grep "open")
     if [ -z "$UDP_PORTS" ]; then

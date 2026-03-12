@@ -99,11 +99,12 @@ elif [ "$MODE" == "2" ]; then
     if echo "$OPEN_PORTS" | grep -qE "80|443|8080|8000|8443|8008"; then
         read -p "A Webport is Open, do you want to run gobuster? [y/N] : " webfuzzanswer
         webfuzzanswer=${webfuzzanswer:-n}
-	if [[ "$webfuzzanswer" == "y" || "$webfuzzanswer" == "Y" ]]; then
+	    if [[ "$webfuzzanswer" == "y" || "$webfuzzanswer" == "Y" ]]; then
 	    webfuzz
-	else
+	    else
 	    echo "[-] Skipping gobuster!"
         fi
+	fi
 elif [ "$MODE" == "3" ]; then
     echo "[+] Mode: udp"
     phase3

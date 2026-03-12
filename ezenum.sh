@@ -13,7 +13,7 @@ if [ -z "$IP" ]; then
 fi
 
 # Output Folder
-OUTDIR="./enum_$IP"
+OUTDIR="$HOME/.local/share/ezenum/enum_$IP"
 mkdir -p "$OUTDIR"
 echo "Output saved in: $OUTDIR"
 

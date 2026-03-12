@@ -60,13 +60,30 @@ phase3() {
 }
 
 
+webfuzz() {
+    # gobuster scan
+    if echo "$OPEN_PORTS" | grep -qE "80|443|8080|8000|8443|8008"; then
+        if echo "$OPEN_PORTS" | grep -qE "443|8443"; then
+            PROTO="https"
+	else
+            PROTO="http"
+	fi
+        gobuster dir -u "$PROTO://$IP" -w /usr/share/wordlists/dirb/common.txt -o "$OUTDIR/webfuzz.txt" > /dev/null 2>&1
+    fi
+    echo "[*] Gobuster Scan finished"
+    cat "$OUTDIR/webfuzz.txt" # could be filtered later on if needed
+}
+
+
+
 # Get Mode
 echo ""
 echo "Which Mode?"
 echo "  [1] quick    - only Phase 1 (get all open ports tcp)"
 echo "  [2] standard - Phase 1 + 2 (scan open ports and do service scan on them)"
 echo "  [3] udp      - only Phase 3 (udp)"
-echo "  [4] Full     - Full (Every Phase) "
+echo "  [4] Full     - Full (Every Phase and webfuzz) "
+echo "  [5] webfuzz  - gobuster "
 echo ""
 
 read -p "Choose (1-4) [default:2] : " MODE
@@ -87,6 +104,10 @@ elif [ "$MODE" == "4" ]; then
     phase1
     phase2
     phase3
+    webfuzz
+elif [ "$MODE" == "5" ]; then
+    echo "[+] Mode: webfuzz"
+    webfuzz
 else
     echo "[-] Error!"
     exit 1

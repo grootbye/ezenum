@@ -15,6 +15,8 @@ Automates common nmap scans with multiple modes:
         ```
 - **full**: everything
 
+- **webfuzz**: gobuster if specific webports are open
+
 Usage:
 ```bash
 ./ezenum.sh <IP>
